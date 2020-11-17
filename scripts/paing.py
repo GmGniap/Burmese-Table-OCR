@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Jul  2 10:21:08 2020
+Created on Thu Nov 18  2020
 
-@author: Fazlur Rahman
+@orginal_author: Fazlur Rahman
+
+@edited by Thet Paing
 """
 
 from preprocessing import get_grayscale, get_binary, invert_area, draw_text, detect
@@ -52,16 +54,9 @@ def main(display = False, print_text = False, write = False):
     cv.waitKey(0)
 
 
-    ## set keywords
-    '''
-    keywords = ['no', 'kabupaten', 'kb_otg', 'kl_otg', 'sm_otg', 'ks_otg', 'not_cvd_otg',
-            'kb_odp', 'kl_odp', 'sm_odp', 'ks_odp', 'not_cvd_odp',
-            'kb_pdp', 'kl_pdp', 'sm_pdp', 'ks_pdp', 'not_cvd_pdp',
-            'positif', 'sembuh', 'meninggal']
-    '''
-    # keywords = ['no1', 'no2', 'no3' , 'no4', 'no5', 'no6',  'no7', 'no8', 'no9']
+    ## set keywords - Column Size
 
-    keywords = ['TS', 'Number']
+    keywords = ['No','ST','TS', 'Number']
 
     dict_burmese = {}
     for keyword in keywords:
