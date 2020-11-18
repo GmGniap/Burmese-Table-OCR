@@ -81,7 +81,8 @@ def detect_lines(image, title='default', rho = 1, theta = np.pi/180, threshold =
             cv.putText(cImage, str(i) + "v", (line[0], line[1] + 5), cv.FONT_HERSHEY_SIMPLEX,
                        0.5, (0, 0, 0), 1, cv.LINE_AA)
 
-        cv.imshow("Source", cImage)
+        #cv.imshow("Source", cImage)
+
         #cv.imshow("Canny", cdstP)
         cv.waitKey(0)
         cv.destroyAllWindows()

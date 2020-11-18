@@ -12,7 +12,7 @@ from ROI_selection import detect_lines, get_ROI
 
 RESIZED_HEIGHT = 2500
 
-def do_OCR(folder_path):
+def do_OCR(folder_path,display = False, print_text = False, write = False):
 
     ext = ( 'jpg', 'jpeg', 'png', 'tif', 'tiff')
     for img_file in os.listdir(folder_path):
@@ -24,17 +24,82 @@ def do_OCR(folder_path):
             print('#################################')
             print('\n')
 
-            img = cv.imread(os.path.join(folder_path,img_file))  #(..,0) - Flag removed while edit
+            src = cv.imread(os.path.join(folder_path,img_file))  #(..,0) - Flag removed while edit
 
-            print(img.shape)
+            #print(src.shape)
 
-            horizontal, vertical = detect_lines(img, minLinLength=350, display=True, write = True)
+            horizontal, vertical = detect_lines(src, minLinLength=350, display=True, write = False)
+            '''
             print("Horizon:")
             print(horizontal)
             print("\n")
             print("verti:")
             print(vertical)
+            '''
 
+            gray = get_grayscale(src)
+            bw = get_binary(gray)
+            cv.imshow("bw", bw)
+            #cv.imwrite("bw.png", bw)
+            cv.waitKey(0)
+
+
+            ## set keywords - Column Size
+
+            keywords = ['TS', 'Number']
+
+            dict_burmese = {}
+            for keyword in keywords:
+                dict_burmese[keyword] = []
+
+            ## set counter for image indexing
+            counter = 0
+
+            ## set line indexarray (interested row 2-14)
+            first_line_index = 1
+            last_line_index = 23
+
+            ## read text
+            print("Start detecting text...")
+            for i in range(first_line_index, last_line_index):
+                for j, keyword in enumerate(keywords):
+                    counter += 1
+
+                    progress = counter/((last_line_index-first_line_index)*len(keywords)) * 100
+                    percentage = "%.2f" % progress
+                    print("Progress: " + percentage + "%")
+
+                    left_line_index = j
+                    right_line_index = j+1
+                    top_line_index = i
+                    bottom_line_index = i+1
+
+                    cropped_image, (x,y,w,h) = get_ROI(bw, horizontal, vertical, left_line_index,
+                                 right_line_index, top_line_index, bottom_line_index)
+
+                    if (keywords[j]=='kabupaten'):
+                        text = detect(cropped_image)
+                        dict_burmese[keyword].append(text)
+
+                        if (print_text):
+                            print("Not number" + ", Row: ", str(i), ", Keyword: " + keyword + ", Text: ", text)
+                    else:
+                        text = detect(cropped_image, is_number=False)
+                        dict_burmese[keyword].append(text)
+
+                        if (print_text):
+                            print("Is number" + ", Row: ", str(i), ", Keyword: " + keyword + ", Text: ", text)
+
+                    if (display or write):
+                            image_with_text = draw_text(src, x, y, w, h, text)
+
+                    if (display):
+                        cv.imshow("detect", image_with_text)
+                        cv.waitKey(0)
+                        cv.destroyAllWindows()
+
+                    if (write):
+                        cv.imwrite("../Images/"+ str(counter) + ".png", image_with_text);
 
             '''
             img = img_utils.resize(img, height=RESIZED_HEIGHT)
