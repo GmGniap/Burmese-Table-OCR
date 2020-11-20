@@ -3,6 +3,7 @@
 import cv2 as cv
 import argparse
 import os
+import csv
 
 #import img_utils
 #import line_segment
@@ -28,7 +29,10 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
 
             #print(src.shape)
 
-            horizontal, vertical = detect_lines(src, minLinLength=350, display=True, write = False)
+            horizontal, vertical, last_row = detect_lines(src, minLinLength=350, display=True, write = False)
+
+            print("Last Row: ")
+            print(last_row)
             '''
             print("Horizon:")
             print(horizontal)
@@ -56,8 +60,8 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
             counter = 0
 
             ## set line indexarray (interested row 2-14)
-            first_line_index = 1
-            last_line_index = 23
+            first_line_index = 0
+            last_line_index = last_row
 
             ## read text
             print("Start detecting text...")
@@ -70,14 +74,17 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
                     print("Progress: " + percentage + "%")
 
                     left_line_index = j
+                    #print("L: ")
+                    #print(left_line_index)
                     right_line_index = j+1
+                    #print(right_line_index)
                     top_line_index = i
                     bottom_line_index = i+1
 
                     cropped_image, (x,y,w,h) = get_ROI(bw, horizontal, vertical, left_line_index,
                                  right_line_index, top_line_index, bottom_line_index)
 
-                    if (keywords[j]=='kabupaten'):
+                    if (keywords[j]=='မြို့နယ်'):
                         text = detect(cropped_image)
                         dict_burmese[keyword].append(text)
 
@@ -100,6 +107,12 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
 
                     if (write):
                         cv.imwrite("../Images/"+ str(counter) + ".png", image_with_text);
+
+
+            with open('day.csv', 'a') as output:
+                writer = csv.writer(output)
+                for key, value in dict_burmese.items():
+                    writer.writerow([key, value])
 
             '''
             img = img_utils.resize(img, height=RESIZED_HEIGHT)
@@ -139,7 +152,7 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
                     os.makedirs(path)
                 debug_file = os.path.join(path, img_file)
                 debug_img = img_utils.get_bounded_box_image(img, lines)
-                cv2.imwrite(debug_file, debug_img)
+                cv2.imwrite(debug_ Columnfile, debug_img)
                 '''
 
 if __name__ == "__main__":

@@ -69,18 +69,25 @@ def detect_lines(image, title='default', rho = 1, theta = np.pi/180, threshold =
         horizontal_lines = overlapping_filter(horizontal_lines, 1)
         vertical_lines = overlapping_filter(vertical_lines, 0)
 
+    count_row = []
+    count_column = []
+
     if (display):
         for i, line in enumerate(horizontal_lines):
             cv.line(cImage, (line[0], line[1]), (line[2], line[3]), (0,255,0), 3, cv.LINE_AA)
 
             cv.putText(cImage, str(i) + "h", (line[0] + 5, line[1]), cv.FONT_HERSHEY_SIMPLEX,
                        0.5, (0, 0, 0), 1, cv.LINE_AA)
+            count_row.append(i)
+
 
         for i, line in enumerate(vertical_lines):
             cv.line(cImage, (line[0], line[1]), (line[2], line[3]), (0,0,255), 3, cv.LINE_AA)
             cv.putText(cImage, str(i) + "v", (line[0], line[1] + 5), cv.FONT_HERSHEY_SIMPLEX,
                        0.5, (0, 0, 0), 1, cv.LINE_AA)
-
+            count_column.append(i)
+            #print("Count: ")
+            #print(count_column)
         #cv.imshow("Source", cImage)
 
         #cv.imshow("Canny", cdstP)
@@ -90,7 +97,9 @@ def detect_lines(image, title='default', rho = 1, theta = np.pi/180, threshold =
     if (write):
         cv.imwrite("../Images/" + title + ".png", cImage);
 
-    return (horizontal_lines, vertical_lines)
+    print("Count Column: ")
+    print(count_column)
+    return (horizontal_lines, vertical_lines, count_row[-1])
 
 def get_cropped_image(image, x, y, w, h):
     cropped_image = image[ y:y+h , x:x+w ]

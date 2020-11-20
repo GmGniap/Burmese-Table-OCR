@@ -31,7 +31,7 @@ def detect(cropped_frame, is_number = False):
         # text = pytesseract.image_to_string(cropped_frame, config ='-c tessedit_char_whitelist=0123456789 --psm 10 --oem 2')
         text = pytesseract.image_to_string(cropped_frame, lang= "eng", config ='--psm 10 --oem 2')
     else:
-        text = pytesseract.image_to_string(cropped_frame, lang="mya", config='--psm 10')
+        text = pytesseract.image_to_string(cropped_frame, lang="mya", config='--psm 10 --oem 1')
 
     return text
 
