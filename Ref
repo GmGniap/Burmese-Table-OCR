@@ -4,3 +4,8 @@ About ROI - https://stackoverflow.com/questions/15424852/region-of-interest-open
 
 Project related Tesseract Myanmar - https://github.com/pndaza/tesseract-myanmar
 
+
+Error Notes 
+imread(...,0) - 0 is flag. That function can cause error to covert gray scale. Read more - https://www.geeksforgeeks.org/python-opencv-cv2-imread-method/
+
+
