@@ -18,6 +18,9 @@ Extract text from tables of images. Use OpenCV to detect margin lines and PyTess
   * I think I can fix with by changing waitkey() & destoryAllWindows functions.
   Solution - change waitkey(0) into waitkey(10) then add destory.
 
+- [ ] Pandas - Removing non-Unicode characters
+  - Appending rows by rows
+
 - [ ] Accuracy Test
 - [ ] Google Vision API
 - [ ] Web Version
