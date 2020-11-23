@@ -84,6 +84,8 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
                     cropped_image, (x,y,w,h) = get_ROI(bw, horizontal, vertical, left_line_index,
                                  right_line_index, top_line_index, bottom_line_index)
 
+                    #cv.imshow("Cropped", cropped_image)
+
                     if (keywords[j]=='မြို့နယ်'):
                         text = detect(cropped_image)
                         dict_burmese[keyword].append(text)
@@ -109,7 +111,7 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
                         cv.imwrite("../Images/"+ str(counter) + ".png", image_with_text);
 
 
-            with open('day.csv', 'a') as output:
+            with open('symo.csv', 'a', encoding='utf-8') as output:
                 writer = csv.writer(output)
                 for key, value in dict_burmese.items():
                     writer.writerow([key, value])
@@ -162,7 +164,7 @@ if __name__ == "__main__":
     #ap.add_argument("-m", "--mode", type=int, nargs='?', const=0, default=0, help=' 0: OCR. 1: only save bounded image 2: OCR + save bounded image. ')
     args = ap.parse_args()
     if(args.input == None):
-        print('usage: python main.py --input path_to_image_folder')
+        print('usage: python folder_input.py --input path_to_image_folder')
 
     else:
         do_OCR(args.input)
