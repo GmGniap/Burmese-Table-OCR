@@ -5,15 +5,17 @@ import pandas as pd
 gc = gspread.service_account(filename='creds.json')
 sh = gc.open_by_key('1tp2mkT_keY6joUulQIyDDoL3Yr_f6x5--DqoJqtk9WQ')
 
-path =  './day.csv'
+path =  './symo.csv'
 
-#df = pd.read_csv(path, encoding='utf-8')
+data = pd.read_csv(path, encoding='utf-8')
+print(data.head(8))
 #df.to_csv('out.csv', index=False)
 
+'''
 # Reading Burmese word csv file as 'UTF-8'
 test = open("symo.csv", "r").read().encode("utf8")
 gc.import_csv('1tp2mkT_keY6joUulQIyDDoL3Yr_f6x5--DqoJqtk9WQ', data=test)
-
+'''
 
 #worksheet = sh.sheet1
 #res = worksheet.get_all_records()
