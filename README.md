@@ -11,7 +11,7 @@ Extract text from tables of images. Use OpenCV to detect margin lines and PyTess
   * In output csv , there's uncessary characters(like \\n symbol), need to find a way to remove these.(possible with pandas then overwrite)
 
 - [x] Link with Google APIs 
- - [x] Google Sheets [Helping Guide)(https://www.youtube.com/watch?v=T1vqS1NL89E)
+ - [x] Google Sheets [Helping Guide](https://www.youtube.com/watch?v=T1vqS1NL89E)
  - [ ] Fix not to overwrite for appending CSVs
 
 - [ ] Always opening BW image for each page
