@@ -10,8 +10,14 @@ path =  './day.csv'
 #df = pd.read_csv(path, encoding='utf-8')
 #df.to_csv('out.csv', index=False)
 
+# Reading Burmese word csv file as 'UTF-8'
 test = open("symo.csv", "r").read().encode("utf8")
 gc.import_csv('1tp2mkT_keY6joUulQIyDDoL3Yr_f6x5--DqoJqtk9WQ', data=test)
+
+
+#worksheet = sh.sheet1
+#res = worksheet.get_all_records()
+#print(res)
 
 '''
 with open('day.csv', 'r') as file_obj:
@@ -39,8 +45,3 @@ with open('output.csv', 'r', encoding='utf-8', errors='ignore') as infile, open(
 
 unicode_csv(infile, outfile)
 '''
-#worksheet = sh.sheet1
-#res = worksheet.get_all_records()
-
-
-#print(res)

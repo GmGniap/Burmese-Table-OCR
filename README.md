@@ -10,19 +10,20 @@ Extract text from tables of images. Use OpenCV to detect margin lines and PyTess
   * folder_input.py - current output as CSV append , so need to delete or find a way to overwrite to apply new folder. Then another possible work is directly upload into Google Sheets.
   * In output csv , there's uncessary characters(like \\n symbol), need to find a way to remove these.(possible with pandas then overwrite)
 
-- [x] Link with Google APIs 
+- [x] Link with Google APIs
  - [x] Google Sheets [Helping Guide](https://www.youtube.com/watch?v=T1vqS1NL89E)
  - [ ] Fix not to overwrite for appending CSVs
 
-- [ ] Always opening BW image for each page
+- [x] Always opening BW image for each page
   * I think I can fix with by changing waitkey() & destoryAllWindows functions.
+  Solution - change waitkey(0) into waitkey(10) then add destory.
 
 - [ ] Accuracy Test
 - [ ] Google Vision API
 - [ ] Web Version
 
-## Error Notes 
-- Unicode CSV encoding problem - when I try to export csv into google sheets , the font wasn't correct when using with Gspread 'import_csv' function. 
+## Error Notes
+- Unicode CSV encoding problem - when I try to export csv into google sheets , the font wasn't correct when using with Gspread 'import_csv' function.
 -- Solution -> open("angel.csv", "r").read().encode("utf8")
 
 ## :books: Ref

@@ -45,7 +45,8 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
             bw = get_binary(gray)
             cv.imshow("bw", bw)
             #cv.imwrite("bw.png", bw)
-            cv.waitKey(0)
+            cv.waitKey(10)
+            cv.destroyAllWindows()
 
 
             ## set keywords - Column Size
