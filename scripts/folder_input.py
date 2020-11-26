@@ -29,7 +29,7 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
 
             #print(src.shape)
 
-            horizontal, vertical, last_row = detect_lines(src, minLinLength=350, display=True, write = False)
+            horizontal, vertical, last_row, last_column = detect_lines(src, minLinLength=350, display=True, write = False)
 
             print("Last Row: ")
             print(last_row)
@@ -60,17 +60,23 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
             ## set counter for image indexing
             counter = 0
 
-            ## set line indexarray (interested row 2-14)
+            ## set line indexarray (interested row 0 to last_row)
             first_line_index = 0
             last_line_index = last_row
+
+            ## set column index
+            left_line_index = 0
+            last_column_index = last_column
 
             ## read text
             print("Start detecting text...")
             for i in range(first_line_index, last_line_index):
-                for j, keyword in enumerate(keywords):
+                #for j, keyword in enumerate(keywords):
+                for j in range(left_line_index, last_column_index):
                     counter += 1
 
-                    progress = counter/((last_line_index-first_line_index)*len(keywords)) * 100
+                    #progress = counter/((last_line_index-first_line_index)*len(keywords)) * 100
+                    progress = counter/((last_line_index-first_line_index)*last_column) * 100
                     percentage = "%.2f" % progress
                     print("Progress: " + percentage + "%")
 

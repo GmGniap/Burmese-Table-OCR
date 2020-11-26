@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Tue Jun 16 15:48:11 2020
@@ -99,7 +100,7 @@ def detect_lines(image, title='default', rho = 1, theta = np.pi/180, threshold =
 
     print("Count Column: ")
     print(count_column)
-    return (horizontal_lines, vertical_lines, count_row[-1])
+    return (horizontal_lines, vertical_lines, count_row[-1], count_column[-1])
 
 def get_cropped_image(image, x, y, w, h):
     cropped_image = image[ y:y+h , x:x+w ]
