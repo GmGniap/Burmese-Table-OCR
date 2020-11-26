@@ -12,15 +12,18 @@ Extract text from tables of images. Use OpenCV to detect margin lines and PyTess
 
 - [x] Link with Google APIs
  - [x] Google Sheets [Helping Guide](https://www.youtube.com/watch?v=T1vqS1NL89E)
- - [ ] Fix not to overwrite for appending CSVs
+ - [x] Fix not to overwrite for appending CSVs
 
 - [x] Always opening BW image for each page
   * I think I can fix with by changing waitkey() & destoryAllWindows functions.
   Solution - change waitkey(0) into waitkey(10) then add destory.
 
+- [x] Correct Horizontal , Vertical & Intersection of table
+  * FindContour?
 - [ ] Pandas - Removing non-Unicode characters
-  - (x) Regex characters
-  - (x) Appending rows by rows
+  -  Regex characters
+  -  Appending rows by rows
+  - Even or Odd numbers of Array
 
 - [ ] Accuracy Test
 - [ ] Google Vision API
@@ -28,7 +31,7 @@ Extract text from tables of images. Use OpenCV to detect margin lines and PyTess
 
 ## Error Notes
 - Unicode CSV encoding problem - when I try to export csv into google sheets , the font wasn't correct when using with Gspread 'import_csv' function.
--- Solution -> open("angel.csv", "r").read().encode("utf8")
+  * Solution -> open("angel.csv", "r").read().encode("utf8")
 
 ## :books: Ref
 1. [Main Reference Guide](https://fazlurnu.com/2020/06/23/text-extraction-from-a-table-image-using-pytesseract-and-opencv/)
