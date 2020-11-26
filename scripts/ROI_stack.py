@@ -2,7 +2,7 @@
 Follow the guide by nathancy from stackoverflow
 Link - https://stackoverflow.com/questions/60521925/how-to-detect-the-horizontal-and-vertical-lines-of-a-table-and-eliminate-the-noi
 '''
-
+import pandas as pd
 import cv2 as cv
 import numpy as np
 import sys
@@ -10,7 +10,7 @@ import math
 from preprocessing import get_grayscale, get_binary, invert_area, draw_text, detect
 
 # Load image, grayscale, Gaussian blur, Otsu's threshold
-filename = '../all/Error/5.png'
+filename = '../all/Error/4.png'
 org = cv.imread(filename)
 gray = cv.cvtColor(org, cv.COLOR_BGR2GRAY)
 blur = cv.GaussianBlur(gray, (3,3), 0)
@@ -218,6 +218,8 @@ dict_burmese = {}
 for keyword in keywords:
     dict_burmese[keyword] = []
 
+text_array = []
+
 for i in range(first_line_index, last_row_index):
     for j in range(left_line_index, last_column_index):
         counter += 1
@@ -228,8 +230,7 @@ for i in range(first_line_index, last_row_index):
         print("Progress: " + percentage + "%")
 
         left_line_index = j
-        print("L: ")
-        print(left_line_index)
+        print("L: " + str(left_line_index))
         right_line_index = j+1
         print("R: " + str(right_line_index))
         top_line_index = i
@@ -250,7 +251,25 @@ for i in range(first_line_index, last_row_index):
 
         # OCR Burmese
         text = detect(cropped_image, is_number=False)
-        dict_burmese[keyword].append(text)
-print(dict_burmese)
+        text_array.append(text)
+print(text_array)
+ts = []
+no = []
+for i in range(0,len(text_array)):
+    if i % 2:
+        no.append(text_array[i])
+    else:
+        ts.append(text_array[i])
+#print(len(ts))
+
+township = pd.Series(ts)
+number = pd.Series(no)
+data = {
+"Township": township,
+"Number" : number
+}
+df = pd.concat(data, axis =1)
+df.to_csv('../all/test.csv',index = False, header= True)
+print(df)
 
 print("Success")
