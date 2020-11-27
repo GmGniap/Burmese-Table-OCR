@@ -144,7 +144,7 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
 
             print("Success")
             '''
-    with open('symo.csv', 'a', encoding='utf-8') as output:
+    with open('../all/symo.csv', 'w', encoding='utf-8') as output:
         writer = csv.writer(output)
         for key, value in dict_burmese.items():
             writer.writerow([key, value])
