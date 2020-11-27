@@ -9,8 +9,9 @@ import sys
 import math
 from preprocessing import get_grayscale, get_binary, invert_area, draw_text, detect
 
+'''
 # Load image, grayscale, Gaussian blur, Otsu's threshold
-filename = '../all/Error/4.png'
+filename = '../all/Error/6.png'
 org = cv.imread(filename)
 gray = cv.cvtColor(org, cv.COLOR_BGR2GRAY)
 blur = cv.GaussianBlur(gray, (3,3), 0)
@@ -26,17 +27,24 @@ vertical_mask = cv.morphologyEx(thresh, cv.MORPH_OPEN, vertical_kernel, iteratio
 
 # Combine masks and remove lines
 table_mask = cv.bitwise_or(horizontal_mask, vertical_mask)
-org[np.where(table_mask==255)] = [255,255,255]
-
-
+#org[np.where(table_mask==255)] = [255,255,255]
+'''
 
 '''
-cv2.imshow('thresh', thresh)
-cv2.waitKey(10)
-cv2.imshow('horizontal_mask', horizontal_mask)
-cv2.waitKey(10)
-cv2.imshow('vertical_mask', vertical_mask)
-cv2.waitKey(10)
+cv.imshow('thresh', thresh)
+cv.waitKey(10)
+cv.imshow('horizontal_mask', horizontal_mask)
+cv.waitKey(10)
+cv.imshow('vertical_mask', vertical_mask)
+cv.waitKey(10)
+cv.namedWindow('table_mask',cv.WINDOW_NORMAL)
+cv.resizeWindow('table_mask', 600,600)
+cv.imshow('table_mask', table_mask)
+cv.waitKey(0)
+cv.namedWindow('org',cv.WINDOW_NORMAL)
+cv.resizeWindow('org', 600,600)
+cv.imshow('org', org)
+cv.waitKey()
 '''
 '''
 ### Modified & Tested Code by Thet Paing ###
@@ -72,16 +80,7 @@ for x1,y1,x2,y2 in lines[0]:
 
 cv2.imwrite('houghlines5.jpg',img)
 '''
-'''
-cv2.namedWindow('table_mask',cv2.WINDOW_NORMAL)
-cv2.resizeWindow('table_mask', 600,600)
-cv2.imshow('table_mask', table_mask)
-cv2.waitKey(0)
-cv2.namedWindow('image',cv2.WINDOW_NORMAL)
-cv2.resizeWindow('image', 600,600)
-cv2.imshow('image', image)
-cv2.waitKey()
-'''
+
 ##### Below is copy code from ROI_selection.py and modified to work inside this code
 def is_vertical(line):
     return line[0]==line[2]
@@ -105,13 +104,29 @@ def overlapping_filter(lines, sorting_index):
 
     return filtered_lines
 
-def detect_lines(image, title='default', rho = 1, theta = np.pi/180, threshold = 50, minLinLength = 290, maxLineGap = 6, display = False, write = False):
+def detect_lines(image, title='default', rho = 1, theta = np.pi/180, threshold = 51, minLinLength = 0, maxLineGap = 0, display = False, write = False):
+
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    blur = cv.GaussianBlur(gray, (3,3), 0)
+    thresh = cv.threshold(blur, 0, 255, cv.THRESH_BINARY_INV + cv.THRESH_OTSU)[1]
+
+    # Detect horizontal lines
+    horizontal_kernel = cv.getStructuringElement(cv.MORPH_RECT, (50,1))
+    horizontal_mask = cv.morphologyEx(thresh, cv.MORPH_OPEN, horizontal_kernel, iterations=1)
+
+    # Detect vertical lines
+    vertical_kernel = cv.getStructuringElement(cv.MORPH_RECT, (1,50))
+    vertical_mask = cv.morphologyEx(thresh, cv.MORPH_OPEN, vertical_kernel, iterations=1)
+
+    # Combine masks and remove lines
+    table_mask = cv.bitwise_or(horizontal_mask, vertical_mask)
+    #org[np.where(table_mask==255)] = [255,255,255]
 
     # Copy edges to the images that will display the results in BGR
-    cImage = np.copy(org)
+    cImage = np.copy(image)
 
     #linesP = cv.HoughLinesP(dst, 1 , np.pi / 180, 50, None, 290, 6)
-    linesP = cv.HoughLinesP(image, rho , theta, threshold, None, minLinLength, maxLineGap)
+    linesP = cv.HoughLinesP(table_mask, rho , theta, threshold, minLinLength, maxLineGap)
 
     horizontal_lines = []
     vertical_lines = []
@@ -186,23 +201,11 @@ def get_ROI(image, horizontal, vertical, left_line_index, right_line_index, top_
 
     return cropped_image, (x1, y1, w, h)
 
-def main(argv):
-
-    default_file = '../Images/source6.png'
-    filename = argv[0] if len(argv) > 0 else default_file
-
-    src = cv.imread(cv.samples.findFile(filename))
-
-    # Loads an image
-    horizontal, vertical = detect_lines(src, display=True)
-
-    return 0
-
-
+'''
 gray = get_grayscale(org)
 bw = get_binary(gray)
 
-horizontal, vertical, last_row, last_column = detect_lines(table_mask, minLinLength=350, display=True, write = False)
+horizontal, vertical, last_row, last_column = detect_lines(thresh, minLinLength=350, display=True, write = False)
 
 counter = 0
 ## set ROW , COLUMN index
@@ -238,19 +241,21 @@ for i in range(first_line_index, last_row_index):
 
         cropped_image, (x,y,w,h) = get_ROI(bw, horizontal, vertical, left_line_index,
                      right_line_index, top_line_index, bottom_line_index)
-        '''
+
+
         cv.namedWindow('Cropped',cv.WINDOW_NORMAL)
         cv.resizeWindow('Cropped', 600,600)
         cv.imshow("Cropped", cropped_image)
         cv.waitKey(0)
         cv.destroyAllWindows()
-        '''
+
+        
         if(right_line_index == last_column):  # Reset Column detect
             left_line_index = 0;
             print("Reset")
 
         # OCR Burmese
-        text = detect(cropped_image, is_number=False)
+        text = detect(cropped_image, is_eng=True)
         text_array.append(text)
 print(text_array)
 ts = []
@@ -273,3 +278,4 @@ df.to_csv('../all/test.csv',index = False, header= True)
 print(df)
 
 print("Success")
+'''

@@ -4,18 +4,27 @@ import cv2 as cv
 import argparse
 import os
 import csv
+import pandas as pd
 
 #import img_utils
 #import line_segment
 
 from preprocessing import get_grayscale, get_binary, invert_area, draw_text, detect
 from ROI_selection import detect_lines, get_ROI
+#from ROI_stack import detect_lines, get_ROI
 
 RESIZED_HEIGHT = 2500
 
 def do_OCR(folder_path,display = False, print_text = False, write = False):
 
     ext = ( 'jpg', 'jpeg', 'png', 'tif', 'tiff')
+    keywords = os.listdir(folder_path)
+    print(keywords)
+
+    dict_burmese = {}
+    for keyword in keywords:
+        dict_burmese[keyword] = []
+
     for img_file in os.listdir(folder_path):
         if img_file.endswith(ext):
             img_basename = os.path.splitext(img_file)[0]
@@ -29,7 +38,8 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
 
             #print(src.shape)
 
-            horizontal, vertical, last_row, last_column = detect_lines(src, minLinLength=350, display=True, write = False)
+            ## I think we need to tune Threshold & minLinLength values to adjust font size & column height of related image
+            horizontal, vertical, last_row, last_column = detect_lines(src, threshold = 150, minLinLength=150, display=True, write = False)
 
             print("Last Row: ")
             print(last_row)
@@ -48,15 +58,10 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
             cv.waitKey(10)
             cv.destroyAllWindows()
 
+            keyword = img_file
 
-            ## set keywords - Column Size
 
-            keywords = ['TS', 'Number']
-
-            dict_burmese = {}
-            for keyword in keywords:
-                dict_burmese[keyword] = []
-
+            text_array = []
             ## set counter for image indexing
             counter = 0
 
@@ -90,21 +95,20 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
 
                     cropped_image, (x,y,w,h) = get_ROI(bw, horizontal, vertical, left_line_index,
                                  right_line_index, top_line_index, bottom_line_index)
+                    '''
+                    cv.namedWindow('Cropped',cv.WINDOW_NORMAL)
+                    cv.resizeWindow('Cropped', 600,600)
+                    cv.imshow("Cropped", cropped_image)
+                    cv.waitKey(0)
+                    cv.destroyAllWindows()
+                    '''
+                    if(right_line_index == last_column):  # Reset Column detect
+                        left_line_index = 0;
+                        print("Reset")
 
-                    #cv.imshow("Cropped", cropped_image)
-
-                    if (keywords[j]=='မြို့နယ်'):
-                        text = detect(cropped_image)
-                        dict_burmese[keyword].append(text)
-
-                        if (print_text):
-                            print("Not number" + ", Row: ", str(i), ", Keyword: " + keyword + ", Text: ", text)
-                    else:
-                        text = detect(cropped_image, is_number=False)
-                        dict_burmese[keyword].append(text)
-
-                        if (print_text):
-                            print("Is number" + ", Row: ", str(i), ", Keyword: " + keyword + ", Text: ", text)
+                    # OCR Burmese
+                    text = detect(cropped_image, is_eng=False)
+                    dict_burmese[keyword].append(text)
 
                     if (display or write):
                             image_with_text = draw_text(src, x, y, w, h, text)
@@ -116,12 +120,34 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
 
                     if (write):
                         cv.imwrite("../Images/"+ str(counter) + ".png", image_with_text);
+            '''
+            print(text_array)
+            ts = []
+            no = []
+            for i in range(0,len(text_array)):
+                if i % 2:
+                    no.append(text_array[i])
+                else:
+                    ts.append(text_array[i])
+            print(len(ts))
+            print(len(no))
 
+            township = pd.Series(ts)
+            number = pd.Series(no)
+            data = {
+            "Township": township,
+            "Number" : number
+            }
+            df = pd.concat(data, axis =1)
+            df.to_csv('../all/test.csv',index = False, header= True)
+            #print(df)
 
-            with open('symo.csv', 'a', encoding='utf-8') as output:
-                writer = csv.writer(output)
-                for key, value in dict_burmese.items():
-                    writer.writerow([key, value])
+            print("Success")
+            '''
+    with open('symo.csv', 'a', encoding='utf-8') as output:
+        writer = csv.writer(output)
+        for key, value in dict_burmese.items():
+            writer.writerow([key, value])
 
             '''
             img = img_utils.resize(img, height=RESIZED_HEIGHT)

@@ -26,8 +26,8 @@ def invert_area(image, x, y, w, h, display=False):
         cv.destroyAllWindows()
     return image
 
-def detect(cropped_frame, is_number = False):
-    if (is_number):
+def detect(cropped_frame, is_eng = False):
+    if (is_eng):
         # text = pytesseract.image_to_string(cropped_frame, config ='-c tessedit_char_whitelist=0123456789 --psm 10 --oem 2')
         text = pytesseract.image_to_string(cropped_frame, lang= "eng", config ='--psm 10 --oem 2')
     else:
