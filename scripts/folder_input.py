@@ -9,6 +9,7 @@ import pandas as pd
 #import img_utils
 #import line_segment
 
+from sheet import export_to_sheets
 from preprocessing import get_grayscale, get_binary, invert_area, draw_text, detect
 from ROI_selection import detect_lines, get_ROI
 #from ROI_stack import detect_lines, get_ROI
@@ -59,7 +60,7 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
             cv.destroyAllWindows()
 
             keyword = img_file
-
+            print(keyword)
 
             text_array = []
             ## set counter for image indexing
@@ -144,12 +145,18 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
 
             print("Success")
             '''
+    data = dict_burmese
+    #print(data)
+    df = pd.DataFrame.from_dict(data, orient='index')
+    e_df = df.transpose()
+    export_to_sheets(e_df, 'w')
+    print("Success")
+    '''
     with open('../all/symo.csv', 'w', encoding='utf-8') as output:
         writer = csv.writer(output)
         for key, value in dict_burmese.items():
             writer.writerow([key, value])
 
-            '''
             img = img_utils.resize(img, height=RESIZED_HEIGHT)
             img = img_utils.clean(img)
             height, width = img.shape

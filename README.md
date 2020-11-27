@@ -25,8 +25,9 @@ Extract text from tables of images. Use OpenCV to detect margin lines and PyTess
   -  Regex characters
   -  Appending rows by rows
   - Even or Odd numbers of Array
-    1. 1D Array into Pandas.Dataframe series
-    2. Combine multiple sereis as one Dataframe
+    1. Dictionary into Dataframe 
+    2. 1D Array into Pandas.Dataframe series
+    3. Combine multiple sereis as one Dataframe
 
 - [ ] Accuracy Test
 - [ ] Google Vision API
@@ -43,7 +44,7 @@ Extract text from tables of images. Use OpenCV to detect margin lines and PyTess
     * Generate CSV - row by row
   - Overall result is satisfied.
   - My code is full of comments & editions. Noone won't be able to understand at the first look.:satisfied:
-    * I need to write a blog about this project and also record a explanation video. 
+    * I need to write a blog about this project and also record an explanation video.
 
 ## :books: Ref
 1. [Main Reference Guide](https://fazlurnu.com/2020/06/23/text-extraction-from-a-table-image-using-pytesseract-and-opencv/)

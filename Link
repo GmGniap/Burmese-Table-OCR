@@ -1,13 +1,15 @@
-1 >> 
+1 >>
 
-src/training/tesstrain.sh --fonts_dir ../langdata_lstm/01_train_font --lang mya --langdata_dir ../langdata --tessdata_dir ./tessdata --output_dir ../Output 
+src/training/tesstrain.sh --fonts_dir ../langdata_lstm/01_train_font --lang mya --langdata_dir ../langdata --tessdata_dir ./tessdata --output_dir ../Output
 
 
-Tutorial Link 
+Tutorial Link
 Main 1. https://tesseract-ocr.github.io/tessdoc/TrainingTesseract-4.00.html#hardware-software-requirements
 
 Previous files - https://github.com/tesseract-ocr/tessdoc
 
-https://medium.com/@guiem/how-to-train-tesseract-4-ebe5881ff3b7 
+https://medium.com/@guiem/how-to-train-tesseract-4-ebe5881ff3b7
 
 
+Try to know how the formula is used to transpose columns into rows at every 4th turns
+- https://support.google.com/docs/thread/22403269?hl=en
