@@ -150,7 +150,7 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
     df = pd.DataFrame.from_dict(data, orient='index')
     #df = pd.DataFrame.from_dict(data)
     e_df = df.transpose()
-    e_df.to_csv('../all/Pyithu/pyithu.csv',index=False)
+    e_df.to_csv('../all/State/state_vote.csv',index=False)
     print("success")
     #export_to_sheets(df, 'w')
     '''

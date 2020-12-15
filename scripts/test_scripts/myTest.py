@@ -1,6 +1,6 @@
 import cv2
 
-image = cv2.imread('mohs_sample.png')
+image = cv2.imread('test.jpg')
 result = image.copy()
 gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
 thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
@@ -16,7 +16,7 @@ for c in cnts:
     # print([c])
     cv2.drawContours(result, [c], -1, (255,255,255), 5)
 
-# cv2.imshow('result', result)
+#cv2.imshow('result', result)
 
 # Remove vertical lines
 vertical_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,40))
@@ -26,7 +26,8 @@ cnts = cnts[0] if len(cnts) == 2 else cnts[1]
 for c in cnts:
     cv2.drawContours(result, [c], -1, (255,255,255), 5)
 
-# cv2.imshow('thresh', thresh)
+cv2.imshow('thresh', thresh)
+cv2.imshow('result', result)
 
-# cv2.imwrite('result.png', result)
+cv2.imwrite('result.png', result)
 cv2.waitKey()
