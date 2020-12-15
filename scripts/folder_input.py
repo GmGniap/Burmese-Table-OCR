@@ -39,7 +39,7 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
 
             #print(src.shape)
 
-            ## I think we need to tune Threshold & minLinLength values to adjust font size & column height of related image
+            ## we need to tune Threshold & minLinLength values to adjust font size & column height of related image
             horizontal, vertical, last_row, last_column = detect_lines(src, threshold = 150, minLinLength=150, display=True, write = False)
 
             print("Last Row: ")
@@ -94,7 +94,7 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
                     top_line_index = i
                     bottom_line_index = i+1
 
-                    cropped_image, (x,y,w,h) = get_ROI(bw, horizontal, vertical, left_line_index,
+                    cropped_image, (x,y,w,h) = get_ROI(src, horizontal, vertical, left_line_index,
                                  right_line_index, top_line_index, bottom_line_index)
                     '''
                     cv.namedWindow('Cropped',cv.WINDOW_NORMAL)
@@ -148,10 +148,15 @@ def do_OCR(folder_path,display = False, print_text = False, write = False):
     data = dict_burmese
     #print(data)
     df = pd.DataFrame.from_dict(data, orient='index')
+    #df = pd.DataFrame.from_dict(data)
     e_df = df.transpose()
+    e_df.to_csv('../all/Pyithu/pyithu.csv',index=False)
+    print("success")
+    #export_to_sheets(df, 'w')
+    '''
     export_to_sheets(e_df, 'w')
     print("Success")
-    '''
+
     with open('../all/symo.csv', 'w', encoding='utf-8') as output:
         writer = csv.writer(output)
         for key, value in dict_burmese.items():

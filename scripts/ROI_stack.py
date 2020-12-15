@@ -188,7 +188,7 @@ def get_cropped_image(image, x, y, w, h):
     cropped_image = image[ y:y+h , x:x+w ]
     return cropped_image
 
-def get_ROI(image, horizontal, vertical, left_line_index, right_line_index, top_line_index, bottom_line_index, offset=4):
+def get_ROI(image, horizontal, vertical, left_line_index, right_line_index, top_line_index, bottom_line_index, offset=2):
     x1 = vertical[left_line_index][2] + offset
     y1 = horizontal[top_line_index][3] + offset
     x2 = vertical[right_line_index][2] - offset
@@ -249,7 +249,7 @@ for i in range(first_line_index, last_row_index):
         cv.waitKey(0)
         cv.destroyAllWindows()
 
-        
+
         if(right_line_index == last_column):  # Reset Column detect
             left_line_index = 0;
             print("Reset")
